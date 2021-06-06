@@ -47,19 +47,20 @@ class Linkedin:
         
         time.sleep(10)
         
+        self.driver.find_element_by_xpath('/html/body/div[6]/aside/div[1]/header/section[1]').click()
         self.driver.find_element_by_xpath('//*[@id="ember24"]').click()
         
         time.sleep(8)
         
-        # jobname  = self.driver.find_element_by_xpath('//*[@placeholder="Search by title, skill, or company"]')
-        # location = self.driver.find_element_by_xpath('//*[@placeholder="City, state, or zip code"]')
+        jobname  = self.driver.find_element_by_xpath('//*[contains(@id,"jobs-search-box-keyword-id-ember")]')
+        location = self.driver.find_element_by_xpath('//*[contains(@id,"jobs-search-box-location-id-ember")]')
         
         jobname.send_keys(self.jobname)
         location.send_keys(self.location)
         
         time.sleep(4)
         
-        self.driver.find_element_by_xpath('/html/body/div[5]/div[3]/div/section/section[1]/div/div[2]/button[1]').click()
+        self.driver.find_element_by_xpath('/html/body/div[6]/div[3]/div/section/section[1]/div/div[2]/button[1]').click()
         
         print("Job Searched")
         

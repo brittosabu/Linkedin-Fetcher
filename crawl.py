@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 
 class Linkedin:
     
-    def __init__(self,encrypt=True,job,location):
+    def __init__(self,job,location,encrypt=True):
         
         self.binary = FirefoxBinary('/usr/bin/firefox')
         self.driver = webdriver.Firefox(firefox_binary=self.binary,executable_path='/home/britto/gecko/geckodriver')
@@ -83,7 +83,7 @@ class Linkedin:
 
 def main():
 
-    L = Linkedin()
+    L = Linkedin("Data Scientist",'India')
     L.run()
 
 if __name__ == "__main__":

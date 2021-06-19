@@ -6,12 +6,13 @@ from selenium.webdriver.common.keys import Keys
 
 class Linkedin:
     
-    def __init__(self):
+    def __init__(self,encrypt=True,job,location):
         
         self.binary = FirefoxBinary('/usr/bin/firefox')
         self.driver = webdriver.Firefox(firefox_binary=self.binary,executable_path='/home/britto/gecko/geckodriver')
-        self.jobname = "Data Scientist"
-        self.location = "India"
+        self.jobname = job
+        self.location = location
+        self.encrypt = encrypt
         
         self.creds = {}
         self.read_creds()
@@ -22,8 +23,9 @@ class Linkedin:
             for line in credentials.readlines():
                 strip = line.split(":")
                 self.creds[strip[0]] = strip[1].strip()
-                
-        self.creds['pass'] = cryptocode.decrypt(self.creds['pass'],self.creds['user'])
+        
+        if self.encrypt:
+            self.creds['pass'] = cryptocode.decrypt(self.creds['pass'],self.creds['user'])
         
     def Login(self):
         
@@ -31,13 +33,15 @@ class Linkedin:
         
         self.driver.get('https://www.linkedin.com/login')
         
+        time.sleep(6)
+        
         username = self.driver.find_element_by_xpath("//*[@id='username']")
         password = self.driver.find_element_by_xpath("//*[@id='password']")
         
-        username.send_keys(self.creds['user'])        
+        username.send_keys(self.creds['user'])
         password.send_keys(self.creds['pass'])
         
-        time.sleep(7)
+        time.sleep(2)
         
         self.driver.find_element_by_xpath('//*[@id="organic-div"]/form/div[3]/button').click()
         
@@ -48,7 +52,7 @@ class Linkedin:
         time.sleep(10)
         
         self.driver.find_element_by_xpath('/html/body/div[6]/aside/div[1]/header/section[1]').click()
-        self.driver.find_element_by_xpath('//*[@id="ember24"]').click()
+        self.driver.find_element_by_xpath('//*[@data-test-global-nav-link="jobs"]').click()
         
         time.sleep(8)
         
@@ -64,10 +68,17 @@ class Linkedin:
         
         print("Job Searched")
         
+    
+    def getting_job_details(self):
+        """
+        """
+        all_jobs = self.driver.find_element_by_xpath('//*[@class="jobs-search-results__list list-style-none"]')
+        jobs_list  = all_jobs.find_elements_by_tag_name("li")
+        
     def run(self):
         
         self.Login()
-        # self.search_jobs()
+        self.search_jobs()
 
 
 def main():
